@@ -5,51 +5,59 @@ using System.Text;
 
 namespace BikeDistributor
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class Order
     {
+        #region Private Variables
+
         private const double TaxRate = .0725d;
         private readonly IList<Line> _lines = new List<Line>();
 
+        #endregion Private Variables
+
+        #region Constructors
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="company"></param>
         public Order(string company)
         {
             Company = company;
         }
 
+        #endregion Constructors
+
+        #region Public Properties
+
         public string Company { get; private set; }
 
+        #endregion Public Properties
+
+        #region Public Methods
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="line"></param>
         public void AddLine(Line line)
         {
             _lines.Add(line);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         public string Receipt()
         {
             var totalAmount = 0d;
             var result = new StringBuilder(string.Format("Order Receipt for {0}{1}", Company, Environment.NewLine));
             foreach (var line in _lines)
             {
-                var thisAmount = 0d;
-                switch (line.Bike.Price)
-                {
-                    case Bike.OneThousand:
-                        if (line.Quantity >= 20)
-                            thisAmount += line.Quantity * line.Bike.Price * .9d;
-                        else
-                            thisAmount += line.Quantity * line.Bike.Price;
-                        break;
-                    case Bike.TwoThousand:
-                        if (line.Quantity >= 10)
-                            thisAmount += line.Quantity * line.Bike.Price * .8d;
-                        else
-                            thisAmount += line.Quantity * line.Bike.Price;
-                        break;
-                    case Bike.FiveThousand:
-                        if (line.Quantity >= 5)
-                            thisAmount += line.Quantity * line.Bike.Price * .8d;
-                        else
-                            thisAmount += line.Quantity * line.Bike.Price;
-                        break;
-                }
+                var thisAmount = line.Bike.GetAdjustedPrice(line.Quantity);
                 result.AppendLine(string.Format("\t{0} x {1} {2} = {3}", line.Quantity, line.Bike.Brand, line.Bike.Model, thisAmount.ToString("C")));
                 totalAmount += thisAmount;
             }
@@ -60,6 +68,10 @@ namespace BikeDistributor
             return result.ToString();
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         public string HtmlReceipt()
         {
             var totalAmount = 0d;
@@ -69,28 +81,7 @@ namespace BikeDistributor
                 result.Append("<ul>");
                 foreach (var line in _lines)
                 {
-                    var thisAmount = 0d;
-                    switch (line.Bike.Price)
-                    {
-                        case Bike.OneThousand:
-                            if (line.Quantity >= 20)
-                                thisAmount += line.Quantity*line.Bike.Price*.9d;
-                            else
-                                thisAmount += line.Quantity*line.Bike.Price;
-                            break;
-                        case Bike.TwoThousand:
-                            if (line.Quantity >= 10)
-                                thisAmount += line.Quantity*line.Bike.Price*.8d;
-                            else
-                                thisAmount += line.Quantity*line.Bike.Price;
-                            break;
-                        case Bike.FiveThousand:
-                            if (line.Quantity >= 5)
-                                thisAmount += line.Quantity*line.Bike.Price*.8d;
-                            else
-                                thisAmount += line.Quantity*line.Bike.Price;
-                            break;
-                    }
+                    var thisAmount = line.Bike.GetAdjustedPrice(line.Quantity);              
                     result.Append(string.Format("<li>{0} x {1} {2} = {3}</li>", line.Quantity, line.Bike.Brand, line.Bike.Model, thisAmount.ToString("C")));
                     totalAmount += thisAmount;
                 }
@@ -103,6 +94,7 @@ namespace BikeDistributor
             result.Append("</body></html>");
             return result.ToString();
         }
-
     }
+
+    #endregion Public Methods
 }
