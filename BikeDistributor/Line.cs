@@ -22,7 +22,13 @@
 
         #region Public Properties
 
+        /// <summary>
+        /// 
+        /// </summary>
         public Bike Bike { get; private set; }
+        /// <summary>
+        /// 
+        /// </summary>
         public int Quantity { get; private set; }
 
         #endregion Public Properties

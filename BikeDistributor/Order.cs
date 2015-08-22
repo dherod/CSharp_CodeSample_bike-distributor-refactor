@@ -12,7 +12,14 @@ namespace BikeDistributor
     {
         #region Private Variables
 
-        private const double TaxRate = .0725d;
+        /// <summary>
+        /// 
+        /// </summary>
+        private const double _taxRate = .0725d;
+
+        /// <summary>
+        /// 
+        /// </summary>
         private readonly IList<Line> _lines = new List<Line>();
 
         #endregion Private Variables
@@ -26,13 +33,22 @@ namespace BikeDistributor
         public Order(string company)
         {
             Company = company;
+            TaxRate = _taxRate;
         }
 
         #endregion Constructors
 
         #region Public Properties
 
+        /// <summary>
+        /// 
+        /// </summary>
         public string Company { get; private set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public double TaxRate { get; private set; }
 
         #endregion Public Properties
 
@@ -51,50 +67,22 @@ namespace BikeDistributor
         /// 
         /// </summary>
         /// <returns></returns>
-        public string Receipt()
+        public IList<Line> GetLines()
         {
-            var totalAmount = 0d;
-            var result = new StringBuilder(string.Format("Order Receipt for {0}{1}", Company, Environment.NewLine));
-            foreach (var line in _lines)
-            {
-                var thisAmount = line.Bike.GetAdjustedPrice(line.Quantity);
-                result.AppendLine(string.Format("\t{0} x {1} {2} = {3}", line.Quantity, line.Bike.Brand, line.Bike.Model, thisAmount.ToString("C")));
-                totalAmount += thisAmount;
-            }
-            result.AppendLine(string.Format("Sub-Total: {0}", totalAmount.ToString("C")));
-            var tax = totalAmount * TaxRate;
-            result.AppendLine(string.Format("Tax: {0}", tax.ToString("C")));
-            result.Append(string.Format("Total: {0}", (totalAmount + tax).ToString("C")));
-            return result.ToString();
+            return _lines;
         }
 
         /// <summary>
         /// 
         /// </summary>
+        /// <param name="type"></param>
         /// <returns></returns>
-        public string HtmlReceipt()
+        public string CreateReceipt(Receipt type)
         {
-            var totalAmount = 0d;
-            var result = new StringBuilder(string.Format("<html><body><h1>Order Receipt for {0}</h1>", Company));
-            if (_lines.Any())
-            {
-                result.Append("<ul>");
-                foreach (var line in _lines)
-                {
-                    var thisAmount = line.Bike.GetAdjustedPrice(line.Quantity);              
-                    result.Append(string.Format("<li>{0} x {1} {2} = {3}</li>", line.Quantity, line.Bike.Brand, line.Bike.Model, thisAmount.ToString("C")));
-                    totalAmount += thisAmount;
-                }
-                result.Append("</ul>");
-            }
-            result.Append(string.Format("<h3>Sub-Total: {0}</h3>", totalAmount.ToString("C")));
-            var tax = totalAmount * TaxRate;
-            result.Append(string.Format("<h3>Tax: {0}</h3>", tax.ToString("C")));
-            result.Append(string.Format("<h2>Total: {0}</h2>", (totalAmount + tax).ToString("C")));
-            result.Append("</body></html>");
-            return result.ToString();
+            IReceipt receipt = ReceiptSimpleFactory.CreateReceipt(type);
+            return receipt.GenerateReceipt(this);
         }
-    }
 
-    #endregion Public Methods
+        #endregion Public Methods
+    }
 }
