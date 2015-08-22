@@ -9,6 +9,42 @@ namespace BikeDistributor.Test
         private readonly static Bike Elite = new Bike("Specialized", "Venge Elite", 2000, 10, 20);
         private readonly static Bike DuraAce = new Bike("Specialized", "S-Works Venge Dura-Ace", 5000, 5, 20);
 
+        // "Madone is the ultimate fusion of power, aerodynamics, ride quality, and integration. 
+        // There are no two ways about it: the first true superbike is a marvel of road bike engineering."
+        private readonly static Bike Madone = new Bike("Trek", "Madone", 4499.99, 5, 15);
+
+        [TestMethod]
+        public void ReceiptTenMadoneDefaultTaxRate()
+        {
+            // Use default tax rate
+            var order = new Order("Rolling Thunder Cycles");
+            order.AddLine(new Line(Madone, 10));
+            string temp = order.CreateReceipt(Receipt.Text);
+            Assert.AreEqual(ResultStatementTenMadoneDefaultTaxRate, order.CreateReceipt(Receipt.Text));
+        }
+
+        private const string ResultStatementTenMadoneDefaultTaxRate = @"Order Receipt for Rolling Thunder Cycles
+	10 x Trek Madone = $38,249.92
+Sub-Total: $38,249.92
+Tax: $2,773.12
+Total: $41,023.03";
+
+        [TestMethod]
+        public void ReceiptTenMadoneSetTaxRate()
+        {
+            // Set custom tax rate
+            var order = new Order("Rolling Thunder Cycles", 0.1d);
+            order.AddLine(new Line(Madone, 10));
+            string temp = order.CreateReceipt(Receipt.Text);
+            Assert.AreEqual(ResultStatementTenMadoneCustomTaxRate, order.CreateReceipt(Receipt.Text));
+        }
+
+        private const string ResultStatementTenMadoneCustomTaxRate = @"Order Receipt for Rolling Thunder Cycles
+	10 x Trek Madone = $38,249.92
+Sub-Total: $38,249.92
+Tax: $3,824.99
+Total: $42,074.91";
+
         [TestMethod]
         public void ReceiptOneDefy()
         {

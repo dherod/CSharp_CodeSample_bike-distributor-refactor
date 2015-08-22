@@ -15,7 +15,7 @@
         /// <param name="price"></param>
         /// <param name="discountCode"></param>
         /// <param name="percentageOff"></param>
-        public Bike(string brand, string model, int price, int discountCode, double percentageOff)
+        public Bike(string brand, string model, double price, int discountCode, double percentageOff)
         {
             Brand = brand;
             Model = model;
@@ -39,7 +39,7 @@
         /// <summary>
         /// 
         /// </summary>
-        public int Price { get; set; }
+        public double Price { get; set; }
         /// <summary>
         /// 
         /// </summary>

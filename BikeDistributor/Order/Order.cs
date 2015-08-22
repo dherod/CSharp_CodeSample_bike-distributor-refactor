@@ -30,10 +30,17 @@ namespace BikeDistributor
         /// 
         /// </summary>
         /// <param name="company"></param>
-        public Order(string company)
+        public Order(string company) : this(company, _taxRate)
+        { }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="company"></param>
+        public Order(string company, double taxRate)
         {
             Company = company;
-            TaxRate = _taxRate;
+            TaxRate = taxRate;
         }
 
         #endregion Constructors
