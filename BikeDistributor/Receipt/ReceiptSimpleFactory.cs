@@ -1,13 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace BikeDistributor
+﻿namespace BikeDistributor
 {
+    /// NOTE: To add more Receipt types do the following
+    ///     1. Create a Receipt class similar to TextReceipt and HtmlReceipt
+    ///     2. Add to Receipt enum
+    ///     3. Add to ReceiptSimpleFactory.CreateReceipt()
+    
     /// <summary>
-    /// 
+    /// The supported Receipt types
     /// </summary>
     public enum Receipt
     {
@@ -16,15 +15,16 @@ namespace BikeDistributor
     }
 
     /// <summary>
-    /// 
+    /// A class that returns a concrete Receipt based upon the specified type
+    /// This implements the Simple Factory design idiom
     /// </summary>
     public class ReceiptSimpleFactory
     {
         /// <summary>
-        /// 
+        /// Creates a concrete Receipt based upon requested type
         /// </summary>
-        /// <param name="type"></param>
-        /// <returns></returns>
+        /// <param name="type">The type of the Receipt to create</param>
+        /// <returns>The concrete Receipt</returns>
         public static IReceipt CreateReceipt(Receipt type)
         {
             IReceipt receipt;

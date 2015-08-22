@@ -7,15 +7,15 @@ using System.Threading.Tasks;
 namespace BikeDistributor
 {
     /// <summary>
-    /// 
+    /// A TextReceipt domain object
     /// </summary>
     public class TextReceipt : IReceipt
     {
         /// <summary>
-        /// 
+        /// Generate a Receipt for the provided Order
         /// </summary>
-        /// <param name="order"></param>
-        /// <returns></returns>
+        /// <param name="order">The Order for which to generate a Receipt</param>
+        /// <returns>A string representing the Receipt</returns>
         public string GenerateReceipt(Order order)
         {
             var totalAmount = 0d;
