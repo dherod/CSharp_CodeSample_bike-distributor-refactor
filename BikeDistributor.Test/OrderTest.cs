@@ -14,78 +14,94 @@ namespace BikeDistributor.Test
         private readonly static Bike Madone = new Bike("Trek", "Madone", 4499.99, 5, 15);
 
         [TestMethod]
-        public void ReceiptTenMadoneDefaultTaxRate()
+        public void TextReceiptTenMadoneDefaultTaxRate()
         {
             // Use default tax rate
             var order = new Order("Rolling Thunder Cycles");
             order.AddLine(new Line(Madone, 10));
             string temp = order.CreateReceipt(Receipt.Text);
-            Assert.AreEqual(ResultStatementTenMadoneDefaultTaxRate, order.CreateReceipt(Receipt.Text));
+            Assert.AreEqual(TextResultStatementTenMadoneDefaultTaxRate, order.CreateReceipt(Receipt.Text));
         }
 
-        private const string ResultStatementTenMadoneDefaultTaxRate = @"Order Receipt for Rolling Thunder Cycles
+        private const string TextResultStatementTenMadoneDefaultTaxRate = @"Order Receipt for Rolling Thunder Cycles
 	10 x Trek Madone = $38,249.92
 Sub-Total: $38,249.92
 Tax: $2,773.12
 Total: $41,023.03";
 
         [TestMethod]
-        public void ReceiptTenMadoneSetTaxRate()
+        public void TextReceiptTenMadoneSetTaxRate()
         {
             // Set custom tax rate
             var order = new Order("Rolling Thunder Cycles", 0.1d);
             order.AddLine(new Line(Madone, 10));
             string temp = order.CreateReceipt(Receipt.Text);
-            Assert.AreEqual(ResultStatementTenMadoneCustomTaxRate, order.CreateReceipt(Receipt.Text));
+            Assert.AreEqual(TextResultStatementTenMadoneCustomTaxRate, order.CreateReceipt(Receipt.Text));
         }
 
-        private const string ResultStatementTenMadoneCustomTaxRate = @"Order Receipt for Rolling Thunder Cycles
+        private const string TextResultStatementTenMadoneCustomTaxRate = @"Order Receipt for Rolling Thunder Cycles
 	10 x Trek Madone = $38,249.92
 Sub-Total: $38,249.92
 Tax: $3,824.99
 Total: $42,074.91";
 
         [TestMethod]
-        public void ReceiptOneDefy()
+        public void TextReceiptOneDefy()
         {
             var order = new Order("Anywhere Bike Shop");
             order.AddLine(new Line(Defy, 1));
-            Assert.AreEqual(ResultStatementOneDefy, order.CreateReceipt(Receipt.Text));
+            Assert.AreEqual(TextResultStatementOneDefy, order.CreateReceipt(Receipt.Text));
         }
 
-        private const string ResultStatementOneDefy = @"Order Receipt for Anywhere Bike Shop
+        private const string TextResultStatementOneDefy = @"Order Receipt for Anywhere Bike Shop
 	1 x Giant Defy 1 = $1,000.00
 Sub-Total: $1,000.00
 Tax: $72.50
 Total: $1,072.50";
 
         [TestMethod]
-        public void ReceiptOneElite()
+        public void TextReceiptOneElite()
         {
             var order = new Order("Anywhere Bike Shop");
             order.AddLine(new Line(Elite, 1));
-            Assert.AreEqual(ResultStatementOneElite, order.CreateReceipt(Receipt.Text));
+            Assert.AreEqual(TextResultStatementOneElite, order.CreateReceipt(Receipt.Text));
         }
 
-        private const string ResultStatementOneElite = @"Order Receipt for Anywhere Bike Shop
+        private const string TextResultStatementOneElite = @"Order Receipt for Anywhere Bike Shop
 	1 x Specialized Venge Elite = $2,000.00
 Sub-Total: $2,000.00
 Tax: $145.00
 Total: $2,145.00";
 
         [TestMethod]
-        public void ReceiptOneDuraAce()
+        public void TextReceiptOneDuraAce()
         {
             var order = new Order("Anywhere Bike Shop");
             order.AddLine(new Line(DuraAce, 1));
-            Assert.AreEqual(ResultStatementOneDuraAce, order.CreateReceipt(Receipt.Text));
+            Assert.AreEqual(TextResultStatementOneDuraAce, order.CreateReceipt(Receipt.Text));
         }
 
-        private const string ResultStatementOneDuraAce = @"Order Receipt for Anywhere Bike Shop
+        private const string TextResultStatementOneDuraAce = @"Order Receipt for Anywhere Bike Shop
 	1 x Specialized S-Works Venge Dura-Ace = $5,000.00
 Sub-Total: $5,000.00
 Tax: $362.50
 Total: $5,362.50";
+
+        [TestMethod]
+        public void TextReceiptMultiLine()
+        {
+            var order = new Order("Rolling Thunder Cycles");
+            order.AddLine(new Line(Defy, 1));
+            order.AddLine(new Line(Elite, 1));
+            Assert.AreEqual(TextResultStatementMultiLine, order.CreateReceipt(Receipt.Text));
+        }
+
+        private const string TextResultStatementMultiLine = @"Order Receipt for Rolling Thunder Cycles
+	1 x Giant Defy 1 = $1,000.00
+	1 x Specialized Venge Elite = $2,000.00
+Sub-Total: $3,000.00
+Tax: $217.50
+Total: $3,217.50";
 
         [TestMethod]
         public void HtmlReceiptOneDefy()
