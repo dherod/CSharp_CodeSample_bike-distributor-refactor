@@ -56,7 +56,7 @@
         /// <summary>
         /// Calculates the price of the bike adjusted for discounts based on quantity, etc.
         /// </summary>
-        /// <param name="quantity"></param>
+        /// <param name="quantity">The quantity being purchased</param>
         /// <returns>The adjusted price of the bike</returns>
         public double GetAdjustedPrice(int quantity)
         {
